@@ -1,19 +1,19 @@
 # Turing Machine Simulator
 This is a simple attempt to replicate the (awesome) work done in the online Turing machine simulator at [turingmachinesimulator.com](http://turingmachinesimulator.com) in C++ so it is faster to test big machines.
-I don't claim that it is bug-free, feature complete, well written nor the fastest possible implementation but it serves its purpose decently well.
+I don't claim it ot be bug-free, feature complete, well written nor the fastest possible implementation but it serves its purpose decently well.
 
 # Building
     make
 
-# Running
-In the examples directory there are some nice algorithms implemented for the online simulator that can be used to to test the simulator (some were copied verbatim from the online simulator examples, others were written by me). The basic syntax is as follows
+# Usage
+In the examples directory there are some nice algorithms implemented for the online simulator that can be used to to test this simulator (some were copied verbatim from the online simulator examples, others were written by me). The basic syntax is as follows
 
     ./turing <tm_code> <input_string>
 
 If you want to simulate the machine without input you can use _ as the second argument. The underscore character works as the TM blank symbol so it is equivalent.
 
 ## Flags
-The simulator has several flags to get more information out of the simulation, the following summary comes up when ran without arguments.
+The simulator has several flags to get more information out of the simulation, the following summary comes up when the simulator is ran without arguments.
 
 		Usage
 		turing <tm_file> <input_word>
