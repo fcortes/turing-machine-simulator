@@ -32,7 +32,7 @@ The simulator has several flags to get more information out of the simulation, t
 				Limit number of steps
 
 ## Examples
-Try running the following commands to the simulator working
+Try running the following commands to see the simulator working
 
     # 5-state busy beaver machine. It will run for a while
     ./turing examples/bb5.tm _ --nolimit --nooutput
