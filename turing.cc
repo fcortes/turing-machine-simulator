@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <regex>
 #include <unordered_map>
 #include <vector>
 #include <set>
@@ -240,16 +241,18 @@ TuringMachine parseMachine(std::string machine_code) {
   parse_state current_state = parse_state::trans_from;
 
   std::size_t linenm = 0;
+
+  std::regex trim_regex = std::regex("^\\s+|\\s+$");
+  std::regex comment_regex = std::regex("//.*$");
   while(std::getline(ss, line, '\n')) {
     linenm++;
     if(line.size() == 0) {
       continue;
     }
-    // Ignore comments
-    if(line.size() >= 2 && line[0] == '/' && line[1] == '/') {
-      current_state = parse_state::trans_from;
-      continue;
-    }
+    // Remove leading and trailing whitespace
+    line = std::regex_replace(line, trim_regex, "");
+    // Remove comments
+    line = std::regex_replace(line, comment_regex, "");
     if(line.compare(0, 5, "name:") == 0) {
       name = line.substr(5);
       continue;
