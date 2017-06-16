@@ -434,9 +434,9 @@ int main(int argc, char** argv) {
     LOG_INFO("N steps: " << n_steps);
     LOG_INFO("Final State: " << machine2.current_state->name);
     if(machine2.accepted()) {
-      LOG_INFO("Accepted");
+      LOG_INFO("\x1b[32mAccepted\x1b[0m");
     } else {
-      LOG_INFO("Rejected");
+      LOG_INFO("\x1b[31mRejected\x1b[0m");
     }
     if(FLAG_output) {
       LOG_INFO("Tapes Content: ");
