@@ -2,6 +2,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <set>
 #include <utility>
 #include <algorithm>
 #include <sstream>
@@ -91,6 +92,7 @@ class TuringMachine {
   public:
   std::string name;
   std::unordered_map<std::string, State> states;
+  std::set<std::string> accepting_states;
   State* current_state;
 
   std::vector<Tape> tapes;
@@ -115,6 +117,14 @@ class TuringMachine {
     halted = true;
   }
 
+  bool accepted() {
+    if(accepting_states.find(current_state->name) != accepting_states.end()) {
+      return halted;
+    }
+    return false;
+    //return halted && accepting_states.count(current_state) > 0;
+  }
+
   void set_word(std::string word) {
     Tape tape = tapes[0];
     Cell* initial_cell = tape.current_cell;
@@ -123,6 +133,10 @@ class TuringMachine {
       tape.right();
     }
     tape.current_cell = initial_cell;
+  }
+
+  void add_accepting_state(State* state) {
+    accepting_states.insert(state->name);
   }
 
   State *get_or_add_state(std::string state_name) {
@@ -209,6 +223,7 @@ TuringMachine parseMachine(std::string machine_code) {
   std::string name;
   std::string initial_state;
   std::string final_states;
+  std::vector<std::string> accepting_states;
 
   std::string state_from;
   std::vector<symbol> read_symbols;
@@ -248,7 +263,7 @@ TuringMachine parseMachine(std::string machine_code) {
     }
     PARSE_CHECK(line.size() >= 2, "line length is not enough");
     if(line.compare(0, 7, "accept:") == 0) {
-      // TODO(fcortes): Use the accepting state
+      accepting_states = split(line.substr(7), ',');
       continue;
     }
     if(initial_state.size() == 0) {
@@ -276,6 +291,10 @@ TuringMachine parseMachine(std::string machine_code) {
         ntapes = read_symbols.size();
         PARSE_CHECK(initial_state.size() > 0, "Initial state not found");
         machine = TuringMachine(name, ntapes, new State(initial_state));
+        for(const auto& st : accepting_states) {
+          State* ss = machine.get_or_add_state(st);
+          machine.add_accepting_state(ss);
+        }
       } else {
         PARSE_CHECK(read_symbols.size() == ntapes,
             "Number of symbols must be the same as number of tapes");
@@ -411,6 +430,11 @@ int main(int argc, char** argv) {
     n_steps--;
     LOG_INFO("N steps: " << n_steps);
     LOG_INFO("Final State: " << machine2.current_state->name);
+    if(machine2.accepted()) {
+      LOG_INFO("Accepted");
+    } else {
+      LOG_INFO("Rejected");
+    }
     if(FLAG_output) {
       LOG_INFO("Tapes Content: ");
       for(size_t i = 0; i < machine2.tapes.size(); i++) {
