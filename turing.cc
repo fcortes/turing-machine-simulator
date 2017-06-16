@@ -257,8 +257,8 @@ TuringMachine parseMachine(std::string machine_code) {
     // Remove spaces and tabs
     line.erase (std::remove(line.begin(), line.end(), ' '), line.end());
     line.erase (std::remove(line.begin(), line.end(), '\t'), line.end());
+    line.erase (std::remove(line.begin(), line.end(), '\r'), line.end());
     if(line.size() == 0) {
-      LOG_DEBUG("Line " << linenm << " contains only whitespace");
       continue;
     }
     PARSE_CHECK(line.size() >= 2, "line length is not enough");
