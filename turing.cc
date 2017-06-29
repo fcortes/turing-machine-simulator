@@ -432,7 +432,7 @@ int main(int argc, char** argv) {
     }
     n_steps--;
     LOG_INFO("N steps: " << n_steps);
-    LOG_INFO("Final State: " << machine2.current_state->name);
+    LOG_INFO("Final State: " << machine2.current_state->name << "(" << machine2.state_word() << ")");
     if(machine2.accepted()) {
       LOG_INFO("\x1b[32mAccepted\x1b[0m");
     } else {
