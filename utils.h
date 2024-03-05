@@ -33,10 +33,9 @@ Strings
 #include <string>
 
 bool pathIsDir(const std::string& filePath) {
-  int status;
   struct stat st_buf;
+  stat(filePath.c_str(), &st_buf);
 
-  status = stat (filePath.c_str(), &st_buf);
   return S_ISDIR(st_buf.st_mode);
 }
 
@@ -79,7 +78,7 @@ std::vector<std::string> vGlob(const std::string& pattern) {
   //Glob.. GLOB_TILDE tells the globber to expand "~" in the pattern to the home directory
   glob(pattern.c_str(), GLOB_TILDE, NULL, &globbuf);
 
-  for (int i = 0; i < globbuf.gl_pathc; ++i) {
+  for (size_t i = 0; i < globbuf.gl_pathc; ++i) {
     fileList.push_back(globbuf.gl_pathv[i]);
   }
   
