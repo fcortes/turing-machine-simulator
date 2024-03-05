@@ -351,8 +351,10 @@ DEFINE_bool(output, true,
     "Output the final content of the TM tapes");
 DEFINE_int(max_steps, 10000000,
     "Maximum number of steps");
-DEFINE_bool(just_steps, false,
-  "Prints out just the number of steps");
+DEFINE_bool(json, false,
+  "Outputs the result in a JSON format (overrides --output)");
+DEFINE_bool(help, false,
+    "Show a list of command-line options");
 
 int main(int argc, char** argv) {
   REGISTER_FLAG(argc, argv, show_machine);
@@ -361,13 +363,14 @@ int main(int argc, char** argv) {
   REGISTER_FLAG(argc, argv, output);
   REGISTER_FLAG(argc, argv, max_steps);
   REGISTER_FLAG(argc, argv, limit);
-  REGISTER_FLAG(argc, argv, just_steps);
+  REGISTER_FLAG(argc, argv, json);
+  REGISTER_FLAG(argc, argv, help);
 
-  if(argc < 2) {
+  if(argc < 2 || FLAG_help) {
     std::cout << "Usage" << std::endl <<
       "turing <tm_file> <input_word>" << std::endl;
     FLAGHELP();
-    return 1;
+    return FLAG_help ? 0 : 1;
   }
   std::string filename(argv[1]);
 	std::string word;
@@ -435,8 +438,25 @@ int main(int argc, char** argv) {
     }
     n_steps--;
 
-    if (FLAG_just_steps) {
-      std::cout << n_steps;
+    if(FLAG_json) {
+      std::cout
+        << "{"
+        << "\"steps\": " << n_steps << ", "
+        << "\"final_state\": " << "\"" << machine2.current_state->name << "\"" << ", "
+        << "\"final_word\": " << "\"" << machine2.state_word() << "\"" << ", "
+        << "\"accepted\": " << (machine2.accepted() ? "true" : "false") << ", "
+        << "\"tapes\": "
+        << "["
+      ;
+
+      for (size_t i = 0; i < machine2.tapes.size(); i++) {
+        if (i != 0) std::cout << ", ";
+        std::cout << "\"" << machine2.tapes[i].content() << "\"";
+      }
+
+      std::cout << "]";
+      std::cout << "}";
+
       return 0;
     }
 
@@ -454,4 +474,5 @@ int main(int argc, char** argv) {
       }
     }
   }
+  return 0;
 }

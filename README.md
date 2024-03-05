@@ -30,8 +30,8 @@ The simulator has several flags to get more information out of the simulation, t
 				Maximum number of steps
 		--limit [true]:
 				Limit number of steps
-		--just_steps [false]:
-        		Prints out just the number of steps
+		--json [false]:
+        		Outputs the result in a JSON format (overrides --output)
 
 ## Examples
 Try running the following commands to see the simulator working
