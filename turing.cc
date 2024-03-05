@@ -351,6 +351,8 @@ DEFINE_bool(output, true,
     "Output the final content of the TM tapes");
 DEFINE_int(max_steps, 10000000,
     "Maximum number of steps");
+DEFINE_bool(just_steps, false,
+  "Prints out just the number of steps");
 
 int main(int argc, char** argv) {
   REGISTER_FLAG(argc, argv, show_machine);
@@ -359,6 +361,7 @@ int main(int argc, char** argv) {
   REGISTER_FLAG(argc, argv, output);
   REGISTER_FLAG(argc, argv, max_steps);
   REGISTER_FLAG(argc, argv, limit);
+  REGISTER_FLAG(argc, argv, just_steps);
 
   if(argc < 2) {
     std::cout << "Usage" << std::endl <<
@@ -431,6 +434,12 @@ int main(int argc, char** argv) {
           "halting state");
     }
     n_steps--;
+
+    if (FLAG_just_steps) {
+      std::cout << n_steps;
+      return 0;
+    }
+
     LOG_INFO("N steps: " << n_steps);
     LOG_INFO("Final State: " << machine2.current_state->name << "(" << machine2.state_word() << ")");
     if(machine2.accepted()) {
