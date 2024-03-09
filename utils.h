@@ -61,6 +61,7 @@ std::vector<std::string> split(const std::string &s, char delim) {
     return elems;
 }
 
+#ifndef __MINGW32__
 /*
 Vector Glob
 */
@@ -88,6 +89,7 @@ std::vector<std::string> vGlob(const std::string& pattern) {
 
   return fileList;
 }
+#endif
 
 /*
 FLAGS
