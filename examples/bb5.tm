@@ -1,4 +1,5 @@
-// Possible (not yet proved to be) 5-state Busy Beaver
+// 5-state Busy Beaver
+// https://discuss.bbchallenge.org/t/july-2nd-2024-we-have-proved-bb-5-47-176-870/237
 
 name: 5 State Busy Beaver
 init: a
